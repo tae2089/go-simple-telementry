@@ -3,6 +3,7 @@
 ---
 ## 설명
 - 해당 프로젝트는 trace와 metric 관련 오픈소스인  Opentelemetry에 대해 사용하는 방법에 대해 연습 및 실험을 하는 레포지토리입니다.
+- .env_sample을 .env로 변경해서 GCP proejct id를 입력해주시면 됩니다.
 ## Opentelemetry에 대하여
 ### Opentelemetry란?
 Opentelemetry는 log,metric,trace와 같은 데이터들을 생성 및 관리를 위한 APIs,SDKs, tooling 등의 묶음 기술입니다.<br/>
