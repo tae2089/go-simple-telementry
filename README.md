@@ -1,4 +1,4 @@
-# go-simple-telementry
+# go-simple-telemetry
 
 ---
 ## 설명
