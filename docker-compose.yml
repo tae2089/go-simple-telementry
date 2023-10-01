@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  server:
+    image: tae2089/k8s-check:1
+    environment:
+      GIN_MODE: "debug"
+      ENVIRONMENT: "production"
+      SERVICE_NAME: "demoservice"
+      SERVICE_VERSION: "1.0"
+      OTLP_SERVER_URL: "jaeger:4318"
+    ports:
+      - "8080:8080"
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    environment:
+      COLLECTOR_OTLP_ENABLED: true
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4319"

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"telemetry/common/config"
 
 	"github.com/tae2089/bob-logging/logger"
 	"go.opentelemetry.io/otel"
@@ -104,7 +105,8 @@ func newResource(serviceName, serviceVersion string) (*resource.Resource, error)
 }
 
 func newTraceProvider(ctx context.Context, res *resource.Resource) (*trace.TracerProvider, error) {
-	otlpExporter, err := otlptracehttp.New(ctx, otlptracehttp.WithEndpoint("localhost:4318"), otlptracehttp.WithInsecure())
+	telemetryConfig := config.GetTelemetryConfig()
+	otlpExporter, err := otlptracehttp.New(ctx, otlptracehttp.WithEndpoint(telemetryConfig.OtlpServerURL), otlptracehttp.WithInsecure())
 	// traceExporter, err := stdouttrace.New(
 	// 	stdouttrace.WithPrettyPrint())
 	if err != nil {

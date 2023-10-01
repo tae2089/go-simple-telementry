@@ -14,6 +14,7 @@ import (
 type TelemetryConfig struct {
 	ServiceName    string `env:"SERVICE_NAME,required"`
 	ServiceVersion string `env:"SERVICE_VERSION,required"`
+	OtlpServerURL  string `env:"OTLP_SERVER_URL"`
 }
 
 var (
