@@ -4,7 +4,8 @@ import (
 	"context"
 	"errors"
 	"io"
-	"telemetry/common/config"
+
+	"github.com/tae2089/go-simple-telemetry/common/config"
 
 	"github.com/tae2089/bob-logging/logger"
 	"go.opentelemetry.io/otel"
@@ -94,13 +95,31 @@ func newExporter(w io.Writer) (trace.SpanExporter, error) {
 }
 
 func newResource(serviceName, serviceVersion string) (*resource.Resource, error) {
+
+	attributes := []attribute.KeyValue{
+		semconv.ServiceName(serviceName),
+		semconv.ServiceVersion(serviceVersion),
+	}
+
+	res, err := resource.New(
+		context.Background(),
+		resource.WithFromEnv(),      // Discover and provide attributes from OTEL_RESOURCE_ATTRIBUTES and OTEL_SERVICE_NAME environment variables.
+		resource.WithTelemetrySDK(), // Discover and provide information about the OpenTelemetry SDK used.
+		resource.WithProcessRuntimeName(),
+		resource.WithProcessRuntimeVersion(),
+		resource.WithOS(),        // Discover and provide OS information.
+		resource.WithContainer(), // Discover and provide container information.
+		resource.WithHost(),
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	return resource.Merge(
-		resource.Default(),
+		res,
 		resource.NewWithAttributes(
 			semconv.SchemaURL,
-			semconv.ServiceName(serviceName),
-			semconv.ServiceVersion(serviceVersion),
-			attribute.String("environment", "demo"),
+			attributes...,
 		))
 }
 
